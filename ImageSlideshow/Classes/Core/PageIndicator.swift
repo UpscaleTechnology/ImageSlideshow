@@ -32,6 +32,8 @@ extension UIPageControl: PageIndicatorView {
             currentPage = newValue
         }
     }
+    
+    // test commit
 
     open override func sizeToFit() {
         var frame = self.frame
