@@ -15,6 +15,8 @@ import SDWebImage
 /// Input Source to image using SDWebImage
 @objcMembers
 public class SDWebImageSource: NSObject, InputSource {
+    public var itemDescription: String
+    
     /// url to load
     public var url: URL
 
@@ -24,16 +26,18 @@ public class SDWebImageSource: NSObject, InputSource {
     /// Initializes a new source with a URL
     /// - parameter url: a url to be loaded
     /// - parameter placeholder: a placeholder used before image is loaded
-    public init(url: URL, placeholder: UIImage? = nil) {
+    public init(url: URL, placeholder: UIImage? = nil, itemDescription: String) {
         self.url = url
         self.placeholder = placeholder
+        self.itemDescription = itemDescription
         super.init()
     }
 
     /// Initializes a new source with a URL string
     /// - parameter urlString: a string url to load
     /// - parameter placeholder: a placeholder used before image is loaded
-    public init?(urlString: String, placeholder: UIImage? = nil) {
+    public init?(urlString: String, placeholder: UIImage? = nil, itemDescription: String) {
+        self.itemDescription = itemDescription
         if let validUrl = URL(string: urlString) {
             self.url = validUrl
             self.placeholder = placeholder

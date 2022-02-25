@@ -11,17 +11,20 @@ import AFNetworking
 /// Input Source to image using AFNetworking
 @objcMembers
 public class AFURLSource: NSObject, InputSource {
+    public var itemDescription: String
+    
     /// url to load
     public var url: URL
-
+    
     /// placeholder used before image is loaded
     public var placeholder: UIImage?
 
     /// Initializes a new source with URL and placeholder
     /// - parameter url: a url to load
     /// - parameter placeholder: a placeholder used before image is loaded
-    public init(url: URL, placeholder: UIImage? = nil) {
+    public init(url: URL, placeholder: UIImage? = nil, itemDescription: String) {
         self.url = url
+        self.itemDescription = itemDescription
         self.placeholder = placeholder
         super.init()
     }
@@ -29,7 +32,8 @@ public class AFURLSource: NSObject, InputSource {
     /// Initializes a new source with a URL string
     /// - parameter urlString: a string url to load
     /// - parameter placeholder: a placeholder used before image is loaded
-    public init?(urlString: String, placeholder: UIImage? = nil) {
+    public init?(urlString: String, placeholder: UIImage? = nil, itemDescription: String) {
+        self.itemDescription = itemDescription
         if let validUrl = URL(string: urlString) {
             self.placeholder = placeholder
             self.url = validUrl

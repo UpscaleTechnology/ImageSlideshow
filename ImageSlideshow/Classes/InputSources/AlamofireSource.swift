@@ -16,6 +16,9 @@ import AlamofireImage
 /// Input Source to image using Alamofire
 @objcMembers
 public class AlamofireSource: NSObject, InputSource {
+    
+    public var itemDescription: String
+    
     /// url to load
     public var url: URL
 
@@ -25,7 +28,8 @@ public class AlamofireSource: NSObject, InputSource {
     /// Initializes a new source with a URL
     /// - parameter url: a url to load
     /// - parameter placeholder: a placeholder used before image is loaded
-    public init(url: URL, placeholder: UIImage? = nil) {
+    public init(url: URL, placeholder: UIImage? = nil, itemDescription: String) {
+        self.itemDescription = itemDescription
         self.url = url
         self.placeholder = placeholder
         super.init()
@@ -34,7 +38,8 @@ public class AlamofireSource: NSObject, InputSource {
     /// Initializes a new source with a URL string
     /// - parameter urlString: a string url to load
     /// - parameter placeholder: a placeholder used before image is loaded
-    public init?(urlString: String, placeholder: UIImage? = nil) {
+    public init?(urlString: String, placeholder: UIImage? = nil, itemDescription: String) {
+        self.itemDescription = itemDescription
         if let validUrl = URL(string: urlString) {
             self.url = validUrl
             self.placeholder = placeholder

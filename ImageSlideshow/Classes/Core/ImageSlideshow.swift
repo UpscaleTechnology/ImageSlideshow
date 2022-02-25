@@ -86,8 +86,25 @@ open class ImageSlideshow: UIView {
             setNeedsLayout()
         }
     }
+    
+    open var labelDescription: PageIndicatorView? {
+        didSet {
+            oldValue?.view.removeFromSuperview()
+            if let labelDescription = labelDescription {
+                addSubview(labelDescription.view)
+                
+            }
+            setNeedsLayout()
+        }
+    }
 
     open var pageIndicatorPosition: PageIndicatorPosition = PageIndicatorPosition() {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+    
+    open var labelDescriptionPosition: PageIndicatorPosition = PageIndicatorPosition() {
         didSet {
             setNeedsLayout()
         }
@@ -279,6 +296,7 @@ open class ImageSlideshow: UIView {
 
         layoutPageControl()
         layoutScrollView()
+        layoutLabelDescription()
     }
 
     open func layoutPageControl() {
@@ -292,6 +310,18 @@ open class ImageSlideshow: UIView {
 
             pageIndicatorView.sizeToFit()
             pageIndicatorView.frame = pageIndicatorPosition.indicatorFrame(for: frame, indicatorSize: pageIndicatorView.frame.size, edgeInsets: edgeInsets)
+        }
+    }
+    
+    open func layoutLabelDescription() {
+        if let labelDescriptionView = labelDescription?.view {
+            
+            var edgeInsets: UIEdgeInsets = UIEdgeInsets.zero
+            if #available(iOS 11.0, *) {
+                edgeInsets = safeAreaInsets
+            }
+            
+            labelDescriptionView.frame = labelDescriptionPosition.indicatorFrame(for: frame, indicatorSize: CGSize(width: self.frame.width - 48, height: 40), edgeInsets: edgeInsets)
         }
     }
 
@@ -390,6 +420,10 @@ open class ImageSlideshow: UIView {
         layoutScrollView()
         layoutPageControl()
         setTimerIfNeeded()
+        
+        if inputs.count > 0 {
+            (labelDescription as? LabelPageDescription)?.itemDescription = images[0].itemDescription
+        }
     }
 
     // MARK: paging methods
@@ -592,6 +626,8 @@ extension ImageSlideshow: UIScrollViewDelegate {
         // when interacting with PageControl directly (#376).
         if scrollView.isDragging {
             pageIndicator?.page = currentPageForScrollViewPage(primaryVisiblePage)
+            let page = currentPageForScrollViewPage(primaryVisiblePage)
+            (labelDescription as? LabelPageDescription)?.itemDescription = images[page].itemDescription
         }
     }
 

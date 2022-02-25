@@ -23,23 +23,29 @@ import UIKit
      - parameter imageView: Image view that is loading the image
     */
     @objc optional func cancelLoad(on imageView: UIImageView)
+    
+    var itemDescription: String { get set }
 }
 
 /// Input Source to load plain UIImage
 @objcMembers
 open class ImageSource: NSObject, InputSource {
+    
+    public var itemDescription: String
     var image: UIImage
 
     /// Initializes a new Image Source with UIImage
     /// - parameter image: Image to be loaded
-    public init(image: UIImage) {
+    public init(image: UIImage, itemDescription: String) {
         self.image = image
+        self.itemDescription = itemDescription
     }
 
     /// Initializes a new Image Source with an image name from the main bundle
     /// - parameter imageString: name of the file in the application's main bundle
     @available(*, deprecated, message: "Use `BundleImageSource` instead")
-    public init?(imageString: String) {
+    public init?(imageString: String, itemDescription: String) {
+        self.itemDescription = itemDescription
         if let image = UIImage(named: imageString) {
             self.image = image
             super.init()
@@ -59,10 +65,13 @@ open class ImageSource: NSObject, InputSource {
 open class BundleImageSource: NSObject, InputSource {
     var imageString: String
 
+    public var itemDescription: String
+    
     /// Initializes a new Image Source with an image name from the main bundle
     /// - parameter imageString: name of the file in the application's main bundle
-    public init(imageString: String) {
+    public init(imageString: String, itemDescription: String) {
         self.imageString = imageString
+        self.itemDescription = itemDescription
         super.init()
     }
 
@@ -77,10 +86,11 @@ open class BundleImageSource: NSObject, InputSource {
 @objcMembers
 open class FileImageSource: NSObject, InputSource {
     var path: String
-
+    public var itemDescription: String
     /// Initializes a new Image Source with an image name from the main bundle
     /// - parameter imageString: name of the file in the application's main bundle
-    public init(path: String) {
+    public init(path: String, itemDescription: String) {
+        self.itemDescription = itemDescription
         self.path = path
         super.init()
     }

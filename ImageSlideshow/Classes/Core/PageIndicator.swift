@@ -8,7 +8,7 @@
 import UIKit
 
 /// Cusotm Page Indicator can be used by implementing this protocol
-public protocol PageIndicatorView: class {
+public protocol PageIndicatorView: AnyObject {
     /// View of the page indicator
     var view: UIView { get }
 
@@ -17,9 +17,11 @@ public protocol PageIndicatorView: class {
 
     /// Total number of pages of the page indicator
     var numberOfPages: Int { get set}
+
 }
 
 extension UIPageControl: PageIndicatorView {
+    
     public var view: UIView {
         return self
     }
@@ -33,8 +35,6 @@ extension UIPageControl: PageIndicatorView {
         }
     }
     
-    // test commit
-
     open override func sizeToFit() {
         var frame = self.frame
         frame.size = size(forNumberOfPages: numberOfPages)
@@ -104,5 +104,122 @@ public class LabelPageIndicator: UILabel, PageIndicatorView {
     public override func sizeToFit() {
         let maximumString = String(repeating: "8", count: numberOfPages) as NSString
         self.frame.size = maximumString.size(withAttributes: [.font: font as Any])
+    }
+}
+
+public class ViewPageIndicator: UIView, PageIndicatorView {
+    
+    public var view: UIView {
+        return self
+    }
+    
+    public var numberOfPages: Int = 0 {
+        didSet {
+            updateLabel()
+        }
+    }
+
+    public var page: Int = 0 {
+        didSet {
+            updateLabel()
+        }
+    }
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        initialize()
+    }
+
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+    
+    var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.backgroundColor = .clear
+        return stackView
+    }()
+    
+    var nextButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "next_ic"), for: .normal)
+        button.setTitle("", for: .normal)
+        button.tintColor = .white
+        return button
+    }()
+    
+    var backButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "back_ic"), for: .normal)
+        button.setTitle("", for: .normal)
+        button.tintColor = .white
+        return button
+    }()
+    
+    var currentPageLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 21)
+        return label
+    }()
+
+    private func initialize() {
+        stackView.addArrangedSubview(nextButton)
+        stackView.addArrangedSubview(currentPageLabel)
+        stackView.addArrangedSubview(backButton)
+        view.addSubview(stackView)
+    }
+
+    private func updateLabel() {
+        
+    }
+}
+
+public class LabelPageDescription: UILabel, PageIndicatorView {
+    
+    public var itemDescription: String = "" {
+        didSet {
+            updateLabel()
+        }
+    }
+    
+    public var view: UIView {
+        return self
+    }
+
+    public var numberOfPages: Int = 0 {
+        didSet {
+            updateLabel()
+        }
+    }
+
+    public var page: Int = 0 {
+        didSet {
+            updateLabel()
+        }
+    }
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        initialize()
+    }
+
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+
+    private func initialize() {
+        self.textAlignment = .right
+        textColor = .white
+    }
+
+    private func updateLabel() {
+        font = UIFont.boldSystemFont(ofSize: 14)
+        text = itemDescription
     }
 }

@@ -73,6 +73,11 @@ Image slideshow is a Swift library providing customizable image slideshow with c
     subspec.dependency 'Parse', '~> 1.14'
     subspec.source_files = 'ImageSlideshow/Classes/InputSources/ParseSource.swift'
   end
+  
+#  s.subspec 'SnapKit' do |subspec|
+#    subspec.dependency 'ImageSlideshow/Core'
+#    subspec.dependency 'SnapKit', '~> 5.0.1'
+#  end
 
   s.default_subspec = 'Core'
 

@@ -14,8 +14,12 @@ import Kingfisher
 
 /// Input Source to image using Kingfisher
 public class KingfisherSource: NSObject, InputSource {
+    
+    public var itemDescription: String
+    
     /// url to load
     public var url: URL
+    
 
     /// placeholder used before image is loaded
     public var placeholder: UIImage?
@@ -27,7 +31,8 @@ public class KingfisherSource: NSObject, InputSource {
     /// - parameter url: a url to be loaded
     /// - parameter placeholder: a placeholder used before image is loaded
     /// - parameter options: options for displaying
-    public init(url: URL, placeholder: UIImage? = nil, options: KingfisherOptionsInfo? = nil) {
+    public init(url: URL, placeholder: UIImage? = nil, options: KingfisherOptionsInfo? = nil, itemDescription: String) {
+        self.itemDescription = itemDescription
         self.url = url
         self.placeholder = placeholder
         self.options = options
@@ -38,7 +43,8 @@ public class KingfisherSource: NSObject, InputSource {
     /// - parameter urlString: a string url to load
     /// - parameter placeholder: a placeholder used before image is loaded
     /// - parameter options: options for displaying
-    public init?(urlString: String, placeholder: UIImage? = nil, options: KingfisherOptionsInfo? = nil) {
+    public init?(urlString: String, placeholder: UIImage? = nil, options: KingfisherOptionsInfo? = nil, itemDescription: String) {
+        self.itemDescription = itemDescription
         if let validUrl = URL(string: urlString) {
             self.url = validUrl
             self.placeholder = placeholder

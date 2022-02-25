@@ -14,7 +14,7 @@ struct Model {
     let title: String
 
     var inputSource: InputSource {
-        return ImageSource(image: image)
+        return ImageSource(image: image, itemDescription: "")
     }
 }
 

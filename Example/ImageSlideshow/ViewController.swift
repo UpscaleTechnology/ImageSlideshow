@@ -17,20 +17,23 @@ class ViewController: UIViewController {
 
     @IBOutlet var slideshow: ImageSlideshow!
 
-    let localSource = [BundleImageSource(imageString: "img1"), BundleImageSource(imageString: "img2"), BundleImageSource(imageString: "img3"), BundleImageSource(imageString: "img4")]
-    let afNetworkingSource = [AFURLSource(urlString: "https://images.unsplash.com/photo-1432679963831-2dab49187847?w=1080")!, AFURLSource(urlString: "https://images.unsplash.com/photo-1447746249824-4be4e1b76d66?w=1080")!, AFURLSource(urlString: "https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?w=1080")!]
-    let alamofireSource = [AlamofireSource(urlString: "https://images.unsplash.com/photo-1432679963831-2dab49187847?w=1080")!, AlamofireSource(urlString: "https://images.unsplash.com/photo-1447746249824-4be4e1b76d66?w=1080")!, AlamofireSource(urlString: "https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?w=1080")!]
-    let sdWebImageSource = [SDWebImageSource(urlString: "https://images.unsplash.com/photo-1432679963831-2dab49187847?w=1080")!, SDWebImageSource(urlString: "https://images.unsplash.com/photo-1447746249824-4be4e1b76d66?w=1080")!, SDWebImageSource(urlString: "https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?w=1080")!]
-    let kingfisherSource = [KingfisherSource(urlString: "https://images.unsplash.com/photo-1432679963831-2dab49187847?w=1080")!, KingfisherSource(urlString: "https://images.unsplash.com/photo-1447746249824-4be4e1b76d66?w=1080")!, KingfisherSource(urlString: "https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?w=1080")!]
+    let localSource = [BundleImageSource(imageString: "img1", itemDescription: "Thanks for reading!"), BundleImageSource(imageString: "img2", itemDescription: "hundreds of students have already joined"), BundleImageSource(imageString: "img3", itemDescription: "hundreds of students have already joined"), BundleImageSource(imageString: "img4", itemDescription: "hundreds of students have already joined")]
+    let afNetworkingSource = [AFURLSource(urlString: "https://images.unsplash.com/photo-1432679963831-2dab49187847?w=1080", itemDescription: " The Font Size Of UILabel In Swift")!, AFURLSource(urlString: "https://images.unsplash.com/photo-1447746249824-4be4e1b76d66?w=1080", itemDescription: "hundreds of students have already joined")!, AFURLSource(urlString: "https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?w=1080", itemDescription: "hundreds of students have already joined")!]
+    let alamofireSource = [AlamofireSource(urlString: "https://images.unsplash.com/photo-1432679963831-2dab49187847?w=1080", itemDescription: "hundreds of students have already joined")!, AlamofireSource(urlString: "https://images.unsplash.com/photo-1447746249824-4be4e1b76d66?w=1080", itemDescription: "hundreds of students have already joined")!, AlamofireSource(urlString: "https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?w=1080", itemDescription: "hundreds of students have already joined")!]
+    let sdWebImageSource = [SDWebImageSource(urlString: "https://images.unsplash.com/photo-1432679963831-2dab49187847?w=1080", itemDescription: "hundreds of students have already joined")!, SDWebImageSource(urlString: "https://images.unsplash.com/photo-1447746249824-4be4e1b76d66?w=1080", itemDescription: "hundreds of students have already joined")!, SDWebImageSource(urlString: "https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?w=1080", itemDescription: "hundreds of students have already joined")!]
+    let kingfisherSource = [KingfisherSource(urlString: "https://images.unsplash.com/photo-1432679963831-2dab49187847?w=1080", itemDescription: "hundreds of students have already joined")!, KingfisherSource(urlString: "https://images.unsplash.com/photo-1447746249824-4be4e1b76d66?w=1080", itemDescription: "hundreds of students have already joined")!, KingfisherSource(urlString: "https://images.unsplash.com/photo-1463595373836-6e0b0a8ee322?w=1080", itemDescription: "hundreds of students have already joined")!]
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         slideshow.slideshowInterval = 5.0
-        slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
+        slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .bottom)
         slideshow.contentScaleMode = UIViewContentMode.scaleAspectFill
 
         slideshow.pageIndicator = UIPageControl.withSlideshowColors()
+        
+        slideshow.labelDescription = LabelPageDescription()
+        slideshow.labelDescriptionPosition = .init(horizontal: .right(padding: 24), vertical: .customTop(padding: 0))
 
         // optional way to show activity indicator during image load (skipping the line will show no activity indicator)
         slideshow.activityIndicator = DefaultActivityIndicator()
