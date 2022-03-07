@@ -27,10 +27,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         slideshow.slideshowInterval = 5.0
-        slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .bottom)
+        slideshow.pageIndicatorPosition = .init(horizontal: .right(padding: 12), vertical: .customBottom(padding: 12))
         slideshow.contentScaleMode = UIViewContentMode.scaleAspectFill
 
-        slideshow.pageIndicator = UIPageControl.withSlideshowColors()
+        slideshow.pageIndicator = ViewPageIndicator()
         
         slideshow.labelDescription = LabelPageDescription()
         slideshow.labelDescriptionPosition = .init(horizontal: .right(padding: 24), vertical: .customTop(padding: 0))

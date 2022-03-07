@@ -81,6 +81,9 @@ open class ImageSlideshow: UIView {
                 addSubview(pageIndicator.view)
                 if let pageIndicator = pageIndicator as? UIControl {
                     pageIndicator.addTarget(self, action: #selector(pageControlValueChanged), for: .valueChanged)
+                } else if let pageIndicator = pageIndicator as? ViewPageIndicator {
+                    pageIndicator.nextButton.addTarget(self, action: #selector(pageControlNextValueChanged), for: .touchUpInside)
+                    pageIndicator.backButton.addTarget(self, action: #selector(pageControlBackValueChanged), for: .touchUpInside)
                 }
             }
             setNeedsLayout()
@@ -276,7 +279,7 @@ open class ImageSlideshow: UIView {
         addSubview(scrollView)
 
         if pageIndicator == nil {
-            pageIndicator = UIPageControl()
+            pageIndicator = ViewPageIndicator()
         }
 
         setTimerIfNeeded()
@@ -310,6 +313,7 @@ open class ImageSlideshow: UIView {
 
             pageIndicatorView.sizeToFit()
             pageIndicatorView.frame = pageIndicatorPosition.indicatorFrame(for: frame, indicatorSize: pageIndicatorView.frame.size, edgeInsets: edgeInsets)
+            pageIndicatorView.layoutIfNeeded()
         }
     }
     
@@ -593,6 +597,18 @@ open class ImageSlideshow: UIView {
     @objc private func pageControlValueChanged() {
         if let currentPage = pageIndicator?.page {
             setCurrentPage(currentPage, animated: true)
+        }
+    }
+    
+    @objc private func pageControlBackValueChanged() {
+        if let currentPage = pageIndicator?.page, currentPage > 0 {
+            setCurrentPage(currentPage - 1, animated: true)
+        }
+    }
+    
+    @objc private func pageControlNextValueChanged() {
+        if let currentPage = pageIndicator?.page, currentPage < (pageIndicator?.numberOfPages ?? 0) - 1 {
+            setCurrentPage(currentPage + 1, animated: true)
         }
     }
 }
