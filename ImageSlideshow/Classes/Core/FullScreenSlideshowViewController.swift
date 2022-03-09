@@ -85,7 +85,7 @@ open class FullScreenSlideshowViewController: UIViewController {
         if #available(iOS 13.0, *) {
             downloadButton.tintColor = .white
             downloadButton.setTitle("", for: .normal)
-            downloadButton.setImage(UIImage(systemName: "download"), for: .normal)
+            downloadButton.setImage(UIImage(named: "download", in: .module, compatibleWith: nil), for: .normal)
             downloadButton.addTarget(self, action: #selector(FullScreenSlideshowViewController.share), for: UIControlEvents.touchUpInside)
             view.addSubview(downloadButton)
         } else {

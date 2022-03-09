@@ -233,7 +233,7 @@ open class ImageSlideshow: UIView {
     fileprivate var slideshowTimer: Timer?
     fileprivate var scrollViewImages = [InputSource]()
     fileprivate var isAnimating: Bool = false
-    fileprivate weak var controller: UIViewController?
+    open var controller: UIViewController?
 
     /// Transitioning delegate to manage the transition to full screen controller
     open fileprivate(set) var slideshowTransitioningDelegate: ZoomAnimatedTransitioningDelegate? // swiftlint:disable:this weak_delegate
@@ -379,6 +379,7 @@ open class ImageSlideshow: UIView {
     }
     
     private func saveToPhotos(_ page: Int) {
+        if page >= slideshowItems.count { return }
         if let image = slideshowItems[page].imageView.image, let pngData = image.pngData() {
             
 //            let temporaryFolder = FileManager.default.temporaryDirectory
