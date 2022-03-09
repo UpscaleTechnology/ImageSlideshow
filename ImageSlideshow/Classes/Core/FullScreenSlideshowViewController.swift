@@ -24,12 +24,18 @@ open class FullScreenSlideshowViewController: UIViewController {
 
     /// Close button 
     open var closeButton = UIButton()
+    
+    /// download button
+    open var downloadButton = UIButton()
 
     /// Close button frame
     open var closeButtonFrame: CGRect?
 
     /// Closure called on page selection
     open var pageSelected: ((_ page: Int) -> Void)?
+    
+    /// Closure called on share selection
+    open var sharedImage: ((_ page: Int) -> Void)?
 
     /// Index of initial image
     open var initialPage: Int = 0
@@ -75,6 +81,17 @@ open class FullScreenSlideshowViewController: UIViewController {
         closeButton.setImage(UIImage(named: "ic_cross_white", in: .module, compatibleWith: nil), for: UIControlState())
         closeButton.addTarget(self, action: #selector(FullScreenSlideshowViewController.close), for: UIControlEvents.touchUpInside)
         view.addSubview(closeButton)
+        
+        if #available(iOS 13.0, *) {
+            downloadButton.tintColor = .white
+            downloadButton.setTitle("", for: .normal)
+            downloadButton.setImage(UIImage(systemName: "download"), for: .normal)
+            downloadButton.addTarget(self, action: #selector(FullScreenSlideshowViewController.share), for: UIControlEvents.touchUpInside)
+            view.addSubview(downloadButton)
+        } else {
+            // Fallback on earlier versions
+        }
+        
     }
 
     override open var prefersStatusBarHidden: Bool {
@@ -109,6 +126,8 @@ open class FullScreenSlideshowViewController: UIViewController {
             }
 
             closeButton.frame = closeButtonFrame ?? CGRect(x: max(10, safeAreaInsets.left), y: max(10, safeAreaInsets.top), width: 40, height: 40)
+            
+            downloadButton.frame = CGRect(x: UIScreen.main.bounds.width - 50, y: max(10, safeAreaInsets.top), width: 40, height: 40)
         }
 
         slideshow.frame = view.frame
@@ -121,5 +140,11 @@ open class FullScreenSlideshowViewController: UIViewController {
         }
 
         dismiss(animated: true, completion: nil)
+    }
+    
+    func share() {
+        if let sharedImage = sharedImage {
+            sharedImage(slideshow.currentPage)
+        }
     }
 }

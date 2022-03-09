@@ -155,6 +155,9 @@ open class ImageSlideshow: UIView {
 
     /// Called on scrollViewDidEndDecelerating
     open var didEndDecelerating: (() -> Void)?
+    
+    /// Called on downloaded
+    open var downloadedBlock: ((_ page: Int) -> Void)?
 
     /// Currenlty displayed slideshow item
     open var currentSlideshowItem: ImageSlideshowItem? {
@@ -230,6 +233,7 @@ open class ImageSlideshow: UIView {
     fileprivate var slideshowTimer: Timer?
     fileprivate var scrollViewImages = [InputSource]()
     fileprivate var isAnimating: Bool = false
+    fileprivate weak var controller: UIViewController?
 
     /// Transitioning delegate to manage the transition to full screen controller
     open fileprivate(set) var slideshowTransitioningDelegate: ZoomAnimatedTransitioningDelegate? // swiftlint:disable:this weak_delegate
@@ -372,6 +376,29 @@ open class ImageSlideshow: UIView {
         }
 
         loadImages(for: scrollViewPage)
+    }
+    
+    private func saveToPhotos(_ page: Int) {
+        if let image = slideshowItems[page].imageView.image, let pngData = image.pngData() {
+            
+//            let temporaryFolder = FileManager.default.temporaryDirectory
+//            let fileName = "\(UUID().uuidString).png"
+//            let temporaryFileURL = temporaryFolder.appendingPathComponent(fileName)
+//
+//            do {
+//                try pngData.write(to: temporaryFileURL)
+//
+//
+//                let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
+//                activityViewController.excludedActivityTypes = [.saveToCameraRoll, .airDrop, .postToVimeo]
+//                controller?.present(activityViewController, animated: true, completion: nil)
+//            } catch {
+//                print(error)
+//            }
+
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            downloadedBlock?(page)
+        }
     }
 
     private func loadImages(for scrollViewPage: Int) {
@@ -579,9 +606,15 @@ open class ImageSlideshow: UIView {
      */
     @discardableResult
     open func presentFullScreenController(from controller: UIViewController, completion: (() -> Void)? = nil) -> FullScreenSlideshowViewController {
+        
+        
         let fullscreen = FullScreenSlideshowViewController()
         fullscreen.pageSelected = {[weak self] (page: Int) in
             self?.setCurrentPage(page, animated: false)
+        }
+        
+        fullscreen.sharedImage = {[weak self] (page: Int) in
+            self?.saveToPhotos(page)
         }
 
         fullscreen.initialPage = currentPage
@@ -590,7 +623,7 @@ open class ImageSlideshow: UIView {
         fullscreen.transitioningDelegate = slideshowTransitioningDelegate
         fullscreen.modalPresentationStyle = .custom
         controller.present(fullscreen, animated: true, completion: completion)
-
+        self.controller = fullscreen
         return fullscreen
     }
 

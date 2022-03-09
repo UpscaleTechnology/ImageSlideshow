@@ -8,6 +8,7 @@
 
 import UIKit
 import ImageSlideshow
+import Photos
 
 class ViewController: UIViewController {
 
@@ -25,6 +26,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        PHPhotoLibrary.requestAuthorization { status in
+          if status == .authorized {
+            //do things
+          }
+        }
 
         slideshow.slideshowInterval = 5.0
         slideshow.pageIndicatorPosition = .init(horizontal: .right(padding: 12), vertical: .customBottom(padding: 12))
