@@ -127,7 +127,17 @@ open class FullScreenSlideshowViewController: UIViewController {
 
             closeButton.frame = closeButtonFrame ?? CGRect(x: max(10, safeAreaInsets.left), y: max(10, safeAreaInsets.top), width: 40, height: 40)
             
-            downloadButton.frame = CGRect(x: UIScreen.main.bounds.width - 50, y: max(10, safeAreaInsets.top), width: 40, height: 40)
+            
+            var edgeInsets: UIEdgeInsets = UIEdgeInsets.zero
+            if #available(iOS 11.0, *) {
+                edgeInsets = safeAreaInsets
+            }
+            
+            let padding = 12
+            
+            let ySize = UIScreen.main.bounds.height - 24 - CGFloat(padding) - edgeInsets.bottom
+            
+            downloadButton.frame = CGRect(x: UIScreen.main.bounds.width - 50, y: ySize, width: 40, height: 40)
         }
 
         slideshow.frame = view.frame
